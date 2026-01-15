@@ -27,8 +27,10 @@ Pod::Spec.new do |s|
     "Sources/_MapboxNavigationLocalization/**/*.swift"
   ]
   
-  # Resources
-  s.resources = "Sources/MapboxNavigationCore/Resources/**/*"
+  # Resources - use resource_bundles to avoid Assets.car conflicts
+  s.resource_bundles = {
+    'MapboxNavigationCore' => ['Sources/MapboxNavigationCore/Resources/**/*']
+  }
   
   # Dependencies - EXACT versions (no ranges) as required
   s.dependency "MapboxDirections", "#{s.version}"

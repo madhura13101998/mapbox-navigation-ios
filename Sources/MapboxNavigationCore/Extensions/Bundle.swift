@@ -28,7 +28,18 @@ extension Bundle {
 #else
     private static let module: Bundle = .init(for: BundleToken.self)
     /// The Mapbox Core Navigation framework bundle.
-    public static let mapboxNavigationUXCore: Bundle = .init(for: BundleToken.self)
+    public static let mapboxNavigationUXCore: Bundle = {
+        let frameworkBundle = Bundle(for: BundleToken.self)
+        
+        // Try to find resource bundle (for CocoaPods with resource_bundles)
+        if let resourceBundleURL = frameworkBundle.resourceURL?.appendingPathComponent("MapboxNavigationCore.bundle"),
+           let resourceBundle = Bundle(url: resourceBundleURL) {
+            return resourceBundle
+        }
+        
+        // Fallback to framework bundle
+        return frameworkBundle
+    }()
 #endif
 
     /// Provides `Bundle` instance, based on provided bundle name and class inside of it.
