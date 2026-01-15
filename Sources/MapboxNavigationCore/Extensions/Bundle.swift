@@ -22,12 +22,14 @@ extension Bundle {
         return object(forInfoDictionaryKey: "NSLocationWhenInUseUsageDescription") as? String
     }
 
-#if !SWIFT_PACKAGE
-    private static let module: Bundle = .init(for: BundleToken.self)
-#endif
-
+#if SWIFT_PACKAGE
     /// The Mapbox Core Navigation framework bundle.
     public static let mapboxNavigationUXCore: Bundle = .module
+#else
+    private static let module: Bundle = .init(for: BundleToken.self)
+    /// The Mapbox Core Navigation framework bundle.
+    public static let mapboxNavigationUXCore: Bundle = .init(for: BundleToken.self)
+#endif
 
     /// Provides `Bundle` instance, based on provided bundle name and class inside of it.
     /// - Parameters:

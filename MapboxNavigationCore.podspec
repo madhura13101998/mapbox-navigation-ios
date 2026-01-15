@@ -1,0 +1,62 @@
+Pod::Spec.new do |s|
+  s.name             = "MapboxNavigationCore"
+  s.version          = "3.18.0-beta.1"
+  s.summary          = "Core navigation logic for Mapbox Navigation SDK (CocoaPods unofficial support)"
+  s.description      = <<-DESC
+    MapboxNavigationCore provides the core navigation functionality for the Mapbox Navigation SDK, 
+    including routing, navigation, and location tracking without UI components.
+    
+    This is an unofficial CocoaPods podspec for use with Flutter apps. The official SDK uses Swift Package Manager.
+  DESC
+  s.homepage         = "https://github.com/mapbox/mapbox-navigation-ios"
+  s.license          = { :type => "Mapbox Terms of Service", :file => "LICENSE.md" }
+  s.author           = { "Mapbox" => "mobile@mapbox.com" }
+  s.source           = { :git => "https://github.com/<your-fork>/mapbox-navigation-ios.git", :tag => "v#{s.version}" }
+  
+  s.platform         = :ios, "14.0"
+  s.swift_version    = "5.8"
+  s.requires_arc     = true
+  s.static_framework = true
+  
+  s.module_name      = "MapboxNavigationCore"
+  
+  # Main source files - MapboxNavigationCore
+  s.source_files = [
+    "Sources/MapboxNavigationCore/**/*.{swift,h}"
+  ]
+  
+  # Internal helper modules (required by MapboxNavigationCore)
+  s.source_files += [
+    "Sources/_MapboxNavigationHelpers/**/*.swift",
+    "Sources/_MapboxNavigationLocalization/**/*.swift"
+  ]
+  
+  # Resources
+  s.resources = "Sources/MapboxNavigationCore/Resources/**/*"
+  
+  # Dependencies - EXACT versions (no ranges) as required
+  s.dependency "MapboxDirections", "#{s.version}"
+  s.dependency "MapboxMaps", "11.18.0-beta.1"
+  s.dependency "MapboxNavigationNative", "324.18.0-beta.1"
+  s.dependency "MapboxCommon"
+  s.dependency "Turf", "4.0.0"
+  
+  # System frameworks
+  s.frameworks = [
+    "UIKit",
+    "Foundation", 
+    "CoreLocation",
+    "AVFoundation",
+    "CoreGraphics",
+    "UserNotifications"
+  ]
+  
+  # Ensure module is properly defined
+  s.pod_target_xcconfig = {
+    "DEFINES_MODULE" => "YES",
+    "SWIFT_VERSION" => "5.8"
+  }
+  
+  # Note: MapboxNavigationNative and MapboxMaps require private access tokens
+  # Users must configure .netrc file with DOWNLOADS:READ scope token
+end

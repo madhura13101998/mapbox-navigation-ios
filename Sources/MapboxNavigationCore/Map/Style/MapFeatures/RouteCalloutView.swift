@@ -59,7 +59,11 @@ final class RouteCalloutView: UIView {
     }
 
     private var tollImage: UIImage? {
+#if SWIFT_PACKAGE
         UIImage(named: "icon_toll", in: .module, with: nil)
+#else
+        UIImage(named: "icon_toll", in: Bundle(for: RouteCalloutView.self), with: nil)
+#endif
     }
 
     private let backgroundShapeLayer = CAShapeLayer()
