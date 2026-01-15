@@ -20,13 +20,9 @@ Pod::Spec.new do |s|
   
   s.module_name      = "MapboxNavigationCore"
   
-  # Main source files - MapboxNavigationCore
+  # All source files - MapboxNavigationCore + internal helpers
   s.source_files = [
-    "Sources/MapboxNavigationCore/**/*.{swift,h}"
-  ]
-  
-  # Internal helper modules (required by MapboxNavigationCore)
-  s.source_files += [
+    "Sources/MapboxNavigationCore/**/*.{swift,h}",
     "Sources/_MapboxNavigationHelpers/**/*.swift",
     "Sources/_MapboxNavigationLocalization/**/*.swift"
   ]
