@@ -59,6 +59,22 @@ Pod::Spec.new do |s|
     "SWIFT_VERSION" => "5.8"
   }
   
+  # Fix module imports for CocoaPods compatibility
+  # In CocoaPods, all source files are in the same module, so these imports fail
+  # We use prepare_command to comment them out before build
+  s.prepare_command = <<-CMD
+    # Comment out module imports that don't work in CocoaPods (same module)
+    if [ -d "Sources/MapboxNavigationCore" ]; then
+      find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's/^import _MapboxNavigationHelpers$/\/\/ import _MapboxNavigationHelpers \/\/ CocoaPods: same module/g' {} +
+      find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's/^import _MapboxNavigationLocalization$/\/\/ import _MapboxNavigationLocalization \/\/ CocoaPods: same module/g' {} +
+    fi
+    if [ -d "Sources/_MapboxNavigationLocalization" ]; then
+      find Sources/_MapboxNavigationLocalization -name "*.swift" -type f -exec sed -i.bak 's/^import _MapboxNavigationHelpers$/\/\/ import _MapboxNavigationHelpers \/\/ CocoaPods: same module/g' {} +
+    fi
+    # Clean up backup files
+    find Sources -name "*.bak" -type f -delete 2>/dev/null || true
+  CMD
+  
   # Note: MapboxNavigationNative and MapboxMaps require private access tokens
   # Users must configure .netrc file with DOWNLOADS:READ scope token
 end
