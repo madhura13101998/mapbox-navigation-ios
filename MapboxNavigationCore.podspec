@@ -21,10 +21,14 @@ Pod::Spec.new do |s|
   s.module_name      = "MapboxNavigationCore"
   
   # All source files - MapboxNavigationCore + internal helpers
+  # Exclude UIColor++.swift from MapboxNavigationCore to avoid conflict with helpers
   s.source_files = [
     "Sources/MapboxNavigationCore/**/*.{swift,h}",
     "Sources/_MapboxNavigationHelpers/**/*.swift",
     "Sources/_MapboxNavigationLocalization/**/*.swift"
+  ]
+  s.exclude_files = [
+    "Sources/MapboxNavigationCore/Map/Other/UIColor++.swift"
   ]
   
   # Resources - use resource_bundles to avoid Assets.car conflicts
