@@ -64,12 +64,13 @@ Pod::Spec.new do |s|
   # We use prepare_command to comment them out before build
   s.prepare_command = <<-CMD
     # Comment out module imports that don't work in CocoaPods (same module)
+    # Use | as delimiter to avoid conflicts with / in replacement string
     if [ -d "Sources/MapboxNavigationCore" ]; then
-      find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's/^import _MapboxNavigationHelpers$/\/\/ import _MapboxNavigationHelpers \/\/ CocoaPods: same module/g' {} +
-      find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's/^import _MapboxNavigationLocalization$/\/\/ import _MapboxNavigationLocalization \/\/ CocoaPods: same module/g' {} +
+      find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's|^import _MapboxNavigationHelpers$|// import _MapboxNavigationHelpers // CocoaPods: same module|g' {} +
+      find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's|^import _MapboxNavigationLocalization$|// import _MapboxNavigationLocalization // CocoaPods: same module|g' {} +
     fi
     if [ -d "Sources/_MapboxNavigationLocalization" ]; then
-      find Sources/_MapboxNavigationLocalization -name "*.swift" -type f -exec sed -i.bak 's/^import _MapboxNavigationHelpers$/\/\/ import _MapboxNavigationHelpers \/\/ CocoaPods: same module/g' {} +
+      find Sources/_MapboxNavigationLocalization -name "*.swift" -type f -exec sed -i.bak 's|^import _MapboxNavigationHelpers$|// import _MapboxNavigationHelpers // CocoaPods: same module|g' {} +
     fi
     # Clean up backup files
     find Sources -name "*.bak" -type f -delete 2>/dev/null || true
