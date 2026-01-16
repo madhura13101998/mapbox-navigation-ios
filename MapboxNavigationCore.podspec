@@ -68,6 +68,7 @@ Pod::Spec.new do |s|
     if [ -d "Sources/MapboxNavigationCore" ]; then
       find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's|^import _MapboxNavigationHelpers$|// import _MapboxNavigationHelpers // CocoaPods: same module|g' {} +
       find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak 's|^import _MapboxNavigationLocalization$|// import _MapboxNavigationLocalization // CocoaPods: same module|g' {} +
+      find Sources/MapboxNavigationCore -name "*.swift" -type f -exec sed -i.bak -e 's|^@_exported import _MapboxNavigationLocalization$|// @_exported import _MapboxNavigationLocalization // CocoaPods: same module|g' {} +
     fi
     if [ -d "Sources/_MapboxNavigationLocalization" ]; then
       find Sources/_MapboxNavigationLocalization -name "*.swift" -type f -exec sed -i.bak 's|^import _MapboxNavigationHelpers$|// import _MapboxNavigationHelpers // CocoaPods: same module|g' {} +
