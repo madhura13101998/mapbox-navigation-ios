@@ -27,9 +27,8 @@ Pod::Spec.new do |s|
     "Sources/_MapboxNavigationHelpers/**/*.swift",
     "Sources/_MapboxNavigationLocalization/**/*.swift"
   ]
-  s.exclude_files = [
-    "Sources/MapboxNavigationCore/Map/Other/UIColor++.swift"
-  ]
+  # Don't exclude UIColor++.swift - we need both files
+  # Instead, we'll rename the helpers one to avoid conflict
   
   # Resources - use resource_bundles to avoid Assets.car conflicts
   s.resource_bundles = {
@@ -59,10 +58,15 @@ Pod::Spec.new do |s|
     "SWIFT_VERSION" => "5.8"
   }
   
-  # Fix module imports for CocoaPods compatibility
+  # Fix module imports and file conflicts for CocoaPods compatibility
   # In CocoaPods, all source files are in the same module, so these imports fail
-  # We use prepare_command to comment them out before build
+  # We also need to rename the helpers UIColor++ to avoid filename conflict
   s.prepare_command = <<-CMD
+    # Rename helpers UIColor++.swift to avoid conflict with MapboxNavigationCore one
+    if [ -f "Sources/_MapboxNavigationHelpers/UI/UIColor++.swift" ]; then
+      mv "Sources/_MapboxNavigationHelpers/UI/UIColor++.swift" "Sources/_MapboxNavigationHelpers/UI/UIColor+Helpers.swift"
+    fi
+    
     # Comment out module imports that don't work in CocoaPods (same module)
     # Use | as delimiter to avoid conflicts with / in replacement string
     if [ -d "Sources/MapboxNavigationCore" ]; then
